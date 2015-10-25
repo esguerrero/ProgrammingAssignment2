@@ -1,15 +1,42 @@
-## Put comments here that give an overall description of what your
-## functions do
+## These functions implements something that in Java could be seen as 
+## a "JavaBean" the so called: "makeCacheMatrix" accessing to properties 
+## using getter and setter methods. And a "cache" function which takes a 
+## "RBean" object, i.e., the makeCacheMatrix object and by using the 
+## 'solve' function calculates the inverse of the matrix.
 
-## Write a short comment describing this function
-
+## RBean - a "bean" in R containing a matrix object
+# subfunctions: set,get, setinv, getinv, list
 makeCacheMatrix <- function(x = matrix()) {
-
+     m <- NULL
+     set <- function(y) {
+          x <<- y
+          m <<- NULL
+     }
+     get <- function() x
+     #setmean <- function(mean) m <<- mean
+     setinv <- function(inv) m <<- inv
+     #getmean <- function() m
+     getinv <- function() m
+     
+     list(set = set, get = get,
+          setinv = setinv,
+          getinv = getinv)
 }
 
 
-## Write a short comment describing this function
 
+## Returns a matrix that is the inverse of 'x' obtaine from a RBean  
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+     
+     #use the function solve(x) x:square invertible matrix
+     
+     m <- x$getinv()
+     if(!is.null(m)) {
+          message("Getting cached data")
+          return(m)
+     }
+     data <- x$get()
+     m <- solve(data, ...)
+     x$setinv(m)
+     m
 }
